@@ -50,6 +50,7 @@ void mergeSort(std::vector<int> &arr, int first, int last) {
   }
 }
 
+// Main time complexity is T(n) = 2T(n/2) + θ(n)
 int main(void) {
   int i, size, flag;
   std::cin >> size;
