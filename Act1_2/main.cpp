@@ -15,14 +15,46 @@ Fecha 19 de Agosto del 2023
 */
 
 #include <iostream>
-
+#include <vector>
+#include <climits>
 
 
 //using namespace std;
 
+void dynamic(int monedas[], int cambio, int n) {
+
+  std::vector<int> minMonedas(cambio + 1, INT_MAX);
+  std::vector<std::vector<int>> combinaciones(cambio + 1);
+
+  minMonedas[0] = 0;
+  combinaciones[0].push_back(0); 
+
+  for (int i = 1; i<=cambio; i++){
+    
+    for (int j = 0; j<n; j++){
+      if (i>=monedas[j] && minMonedas[i - monedas[j]]+1 < minMonedas[i]){
+        
+        minMonedas[i] = minMonedas[i-monedas[j]] + 1;
+        
+        combinaciones[i] = combinaciones[i-monedas[j]];
+        
+        combinaciones[i].push_back(monedas[j]);
+       
+      }
+    }
+    
+  }  
+  std::cout << "Dinamic" << std::endl; 
+  for (int k = 1; k<=minMonedas[cambio]; k++){
+    std::cout << combinaciones[cambio][k] << std::endl;
+  } 
+
+}
+
+
 void greedy(int monedas[], int cambio, int n){
   int temp;
-  for (int i =0; i<n; i++){
+  for (int i = 0; i<n; i++){
 
     if (monedas[i]>cambio){
       std::cout << monedas[i] << " ";
@@ -66,6 +98,7 @@ int main() {
     std::cout << "cambio: " << cambio << std::endl; 
 
     greedy(monedas, cambio, n);
+    //dynamic(monedas, cambio, n);
 
 
   } else{
