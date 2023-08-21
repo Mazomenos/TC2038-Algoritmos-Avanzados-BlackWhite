@@ -16,13 +16,14 @@ Fecha 19 de Agosto del 2023
 
 #include <iostream>
 #include <vector>
-#include <climits>
+#include <bits/stdc++.h>
 
 
 //using namespace std;
 
 void dynamic(int monedas[], int cambio, int n) {
 
+  std::vector<int> lista(n,0);
   std::vector<int> minMonedas(cambio + 1, INT_MAX);
   std::vector<std::vector<int>> combinaciones(cambio + 1);
 
@@ -46,7 +47,16 @@ void dynamic(int monedas[], int cambio, int n) {
   }  
   std::cout << "Dinamic" << std::endl; 
   for (int k = 1; k<=minMonedas[cambio]; k++){
-    std::cout << combinaciones[cambio][k] << std::endl;
+    for (int l = 0; l<n ; l++){
+      if (combinaciones[cambio][k] == monedas[l]){
+        lista[l] += 1;
+      }
+    }
+    //std::cout << combinaciones[cambio][k] << std::endl;
+  }
+
+  for (int m = n-1; m>=0; m--){
+    std::cout << monedas[m] << " " << lista[m] << std::endl;
   } 
 
 }
@@ -75,15 +85,19 @@ void greedy(int monedas[], int cambio, int n){
 
 
 int main() {
-  int n, p, q, cambio;
+  int n, valor, p, q, cambio;
   
 
   std::cin>>n;
 
-  int monedas[n];
+  int monedasUp[n];
+  int monedasDown[n];
 
   for(int i=0; i<n; i++){
-    std::cin>>monedas[i];
+    std::cin>>valor;
+    monedasUp[i] = valor;
+    monedasDown[i] = valor;
+
   }
 
   std::cout << "money" << std::endl;
@@ -97,8 +111,13 @@ int main() {
 
     std::cout << "cambio: " << cambio << std::endl; 
 
-    greedy(monedas, cambio, n);
-    //dynamic(monedas, cambio, n);
+    std::sort(monedasUp, monedasUp + n);
+    std::sort(monedasDown, monedasDown + n, std::greater<int>());
+
+
+
+    greedy(monedasDown, cambio, n);
+    dynamic(monedasUp, cambio, n);
 
 
   } else{
