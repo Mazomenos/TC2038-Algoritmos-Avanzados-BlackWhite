@@ -14,29 +14,31 @@ Fecha 19 de Agosto del 2023
 
 */
 
+//Librerias utilizadas
 #include <iostream>
 #include <vector>
 #include <bits/stdc++.h>
 
-
-//using namespace std;
-
+//Funcion dinamica
 void dynamic(int monedas[], int cambio, int n) {
 
   std::vector<int> lista(n,0);
-  std::vector<int> minMonedas(cambio + 1, INT_MAX);
+  std::vector<int> minMonedas(cambio + 1, INT_MAX-1);
   std::vector<std::vector<int>> combinaciones(cambio + 1);
 
   minMonedas[0] = 0;
   combinaciones[0].push_back(0); 
 
+  
+
   for (int i = 1; i<=cambio; i++){
-    
     for (int j = 0; j<n; j++){
+     
+      
       if (i>=monedas[j] && minMonedas[i - monedas[j]]+1 < minMonedas[i]){
         
         minMonedas[i] = minMonedas[i-monedas[j]] + 1;
-        
+       
         combinaciones[i] = combinaciones[i-monedas[j]];
         
         combinaciones[i].push_back(monedas[j]);
@@ -45,15 +47,20 @@ void dynamic(int monedas[], int cambio, int n) {
     }
     
   }  
-  std::cout << "Dinamic" << std::endl; 
+  
+  
   for (int k = 1; k<=minMonedas[cambio]; k++){
+    
     for (int l = 0; l<n ; l++){
+      
+      
       if (combinaciones[cambio][k] == monedas[l]){
         lista[l] += 1;
       }
     }
-    //std::cout << combinaciones[cambio][k] << std::endl;
   }
+
+
 
   for (int m = n-1; m>=0; m--){
     std::cout << monedas[m] << " " << lista[m] << std::endl;
@@ -61,7 +68,7 @@ void dynamic(int monedas[], int cambio, int n) {
 
 }
 
-
+//Funcion Avara / Greedy
 void greedy(int monedas[], int cambio, int n){
   int temp;
   for (int i = 0; i<n; i++){
@@ -83,7 +90,7 @@ void greedy(int monedas[], int cambio, int n){
 
 }
 
-
+// Main Time Complexity on both Dynamic and Greedy methods is O(n)  
 int main() {
   int n, valor, p, q, cambio;
   
@@ -100,7 +107,7 @@ int main() {
 
   }
 
-  std::cout << "money" << std::endl;
+
 
   std::cin>>p>>q;
 
@@ -109,16 +116,19 @@ int main() {
   if(p<q){
     cambio = q-p;
 
-    std::cout << "cambio: " << cambio << std::endl; 
+    
 
     std::sort(monedasUp, monedasUp + n);
     std::sort(monedasDown, monedasDown + n, std::greater<int>());
 
+   
+
 
 
     greedy(monedasDown, cambio, n);
-    dynamic(monedasUp, cambio, n);
 
+    dynamic(monedasUp, cambio, n);
+    
 
   } else{
     std::cout<<"Precio es mayor que el pago"<<std::endl;
