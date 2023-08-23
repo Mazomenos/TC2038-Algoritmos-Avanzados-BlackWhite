@@ -25,7 +25,7 @@ void backtraking(std::vector<std::vector<int>> mat, std::vector<std::vector<int>
 
     // 2d vector with same dimensions as mat but filled with 0´s
 
-
+    //std::cout << x << " " << y <<  std::endl;
 
 
     //accept
@@ -45,8 +45,10 @@ void backtraking(std::vector<std::vector<int>> mat, std::vector<std::vector<int>
 
         //deny
         if (x < 0 or y < 0 or x >= m or y >= n) {
+
             return;
         }
+
         if (mat[x][y] == 0) {
             path[x][y] = 0;
             return;
@@ -54,13 +56,25 @@ void backtraking(std::vector<std::vector<int>> mat, std::vector<std::vector<int>
         path[x][y] = 1;
 
         //loop
-        backtraking(mat, path, m, n, x + 1, y); //down
+        if (x+1 <= m-1 ) {
+            if (path[x + 1][y] != 1) {
+
+                backtraking(mat, path, m, n, x + 1, y); //down
+            }
+        }
+
         if (path[x][y+1] != 1){
+            //path[x][y+1] != 1 or y + 1 == n-1
+
             backtraking(mat, path, m, n, x, y + 1); //right
         }
         if (x != m-1 and y != n-1) {
+
             backtraking(mat, path, m, n, x, y - 1); //left
+            backtraking(mat, path, m, n, x - 1, y); //up
         }
+
+
 
 
 }
