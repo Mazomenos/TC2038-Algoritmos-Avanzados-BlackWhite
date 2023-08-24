@@ -1,5 +1,5 @@
 /*
-Equipo:  
+Equipo:
 
 Integrantes:
 
@@ -7,96 +7,176 @@ Integrantes:
 
 - Alejandro Jauregui Zarate A01252368
 
-TC2038 
+TC2038
 
-Fecha 10 de Agosto del 2023
+Fecha 23 de Agosto del 2023
 
 
 */
 
-//Imported resources and libraries
-#include <bits/stdc++.h>
+// Includes
 #include <iostream>
+#include <limits>
+#include <sstream>
 #include <vector>
 
-/*
-This function creates 2 temporary vectors with the divided items and
-then merges them form higher to lower numbers, modifying the main array
-with the correct order
-*/
-void merge(std::vector<int> &arr, int first, int mid, int last) {
-  int val1 = mid - first + 1;
-  int val2 = last - mid;
+void backtraking(std::vector<std::vector<int>> mat,
+                 std::vector<std::vector<int>> path, int m, int n, int x,
+                 int y) {
+
+  // 2d vector with same dimensions as mat but filled with 0´s
+
+  // std::cout << x << " " << y <<  std::endl;
+
+  // accept
+  if (x == m - 1 and y == n - 1) {
+    path[x][y] = 1;
+
+    for (std::vector<int> place : path) {
+
+      for (int nums : place) {
+        std::cout << nums << " ";
+      }
+      std::cout << std::endl;
+    }
+  }
+
+  // deny
+  if (x < 0 or y < 0 or x >= m or y >= n) {
+
+    return;
+  }
+
+  if (mat[x][y] == 0) {
+    path[x][y] = 0;
+    return;
+  }
+  path[x][y] = 1;
+
+  // loop
+  if (x + 1 <= m - 1) {
+    if (path[x + 1][y] != 1) {
+
+      backtraking(mat, path, m, n, x + 1, y); // down
+    }
+  }
+
+  if (path[x][y + 1] != 1) {
+    // path[x][y+1] != 1 or y + 1 == n-1
+
+    backtraking(mat, path, m, n, x, y + 1); // right
+  }
+  if (x != m - 1 and y != n - 1) {
+
+    backtraking(mat, path, m, n, x, y - 1); // left
+    backtraking(mat, path, m, n, x - 1, y); // up
+  }
+}
+
+bool canVisit(int x, int y, int m, int n, std::vector<std::vector<int>> &mat) {
+  return x >= 0 && y >= 0 && x < m && y < n && mat[x][y] == 1;
+}
+
+int calculateHeuristic(int x, int y, int m, int n) {
+  int remainingRows = m - 1 - x;
+  int remainingCols = n - 1 - y;
+  return remainingRows + remainingCols;
+}
+
+void branch_bound(std::vector<std::vector<int>> &mat,
+                  std::vector<std::vector<int>> &path, int m, int n, int x,
+                  int y, std::vector<std::vector<bool>> &visited) {
+    if (x == m - 1 && y == n - 1) {
+        path[x][y] = 1;
+
+        for (const std::vector<int> &row : path) {
+            for (int num : row) {
+                std::cout << num << " ";
+            }
+            std::cout << std::endl;
+        }
+        return;
+    }
+
+    if (!canVisit(x, y, m, n, mat) || visited[x][y]) {
+        return;
+    }
+
+    int heuristic = calculateHeuristic(x, y, m, n);
+
+    if (heuristic > (m * n)) {
+        return;
+    }
+
+    path[x][y] = 1;
+    visited[x][y] = true;
+
+    if (canVisit(x + 1, y, m, n, mat)) {
+        branch_bound(mat, path, m, n, x + 1, y, visited);
+    }
+
+    if (canVisit(x, y + 1, m, n, mat)) {
+        branch_bound(mat, path, m, n, x, y + 1, visited);
+    }
+
+    if (canVisit(x, y - 1, m, n, mat)) {
+        branch_bound(mat, path, m, n, x, y - 1, visited);
+    }
+
+    if (canVisit(x - 1, y, m, n, mat)) {
+        branch_bound(mat, path, m, n, x - 1, y, visited);
+    }
+
+    path[x][y] = 0;
+    visited[x][y] = false;
+}
 
 
-  std::vector<int> leftArr(val1);
-  std::vector<int> rightArr(val2);
+int main() {
+  std::string input;
+  int m, n, num;
+  int x = 0, y = 0;
 
+  std::cin >> m;
+  std::cin >> n;
+
+  // removes input buffer to avoid skipping over cin instructions on the first
+  // loop rotation
+  std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+  std::vector<std::vector<int>> matrix(m);
+  std::vector<std::vector<int>> path(m, std::vector<int>(n, 0));
+  std::vector<std::vector<bool>> visited(m, std::vector<bool>(n, false));
+
+  for (int i = 0; i < m; i++) {
+    // std::cout << i << std::endl;
+    std::getline(std::cin, input);
+    std::istringstream iss(input);
+    while (iss >> num) {
+      if (num == 0 or num == 1) {
+        matrix[i].push_back(num);
+      } else {
+        std::cout << "Input contains numbers different from 1 or 0";
+        return -1;
+      }
+    }
+  }
+  /*
+  for (std::vector<int> place : matrix){
+
+      for (int nums : place){
+          std::cout <<nums << std::endl;
+      }
+  }
+   */
+
+  std::cout << "Branch&Bound: \n";
+  branch_bound(matrix, path, m, n, x, y, visited);
   
-  for (int i = 0; i < val1; i++)
-    leftArr[i] = arr[first + i];
-  for (int j = 0; j < val2; j++)
-    rightArr[j] = arr[mid + 1 + j];
-
-  int i = 0, j = 0, k = first;
-
-  while (i < val1 && j < val2) {
-    if (leftArr[i] >= rightArr[j]) {
-      arr[k] = leftArr[i];
-      i++;
-    } else {
-      arr[k] = rightArr[j];
-      j++;
-    }
-    k++;
-  }
-
-  while (i < val1) {
-    arr[k] = leftArr[i];
-    i++;
-    k++;
-  }
-
-  while (j < val2) {
-    arr[k] = rightArr[j];
-    j++;
-    k++;
-  }
-}
-
-/*
-This function recursively splits the main list in halves and then
-sends them to the merge function
-*/
-void mergeSort(std::vector<int> &arr, int first, int last) {
-  if (first < last) {
-    int mid = first + (last - first) / 2;
-    mergeSort(arr, first, mid);
-    mergeSort(arr, mid + 1, last);
-
-    merge(arr, first, mid, last);
-  }
-}
-
-// Main time complexity is T(n) = 2T(n/2) + θ(n)
-int main(void) {
-  int i, size;
-  std::cin >> size;
-  std::cout << "Size: " << size << std::endl;
-  std::vector<int> myVector(size);
-
-
-    for (i = 0; i < size; i++) {
-      std::cin >> myVector[i];
-    }
-
-  mergeSort(myVector, 0, size - 1);
-
-  std::cout << "Sorted: ";
-  for (int num : myVector) {
-    std::cout << num << " ";
-  }
-  std::cout << std::endl;
+  path.assign(m, std::vector<int>(n, 0));
+  
+  std::cout << "Backtracking: \n";
+  backtraking(matrix, path, m, n, x, y);
 
   return 0;
 }
