@@ -23,23 +23,31 @@ Fecha 23 de Agosto del 2023
 
 void backtraking(std::vector<std::vector<int>> mat, std::vector<std::vector<int>> path , int m, int n, int x, int y){
 
-    // 2d vector with same dimensions as mat but filled with 0´s
+    //std::cout << x << " " << y << std::endl;
 
-    //std::cout << x << " " << y <<  std::endl;
+    if (path[m-1][n-1] == 1){
+        std::cout << "ending?" << std::endl;
 
+    }
 
     //accept
-    if (x == m-1 and y == n-1){
+    else if (x == m-1 and y == n-1){
         path[x][y] = 1;
+        //std::cout << x << " pip " << y << std::endl;
 
 
-        for (std::vector<int> place : path){
+            for (std::vector<int> place : path){
 
             for (int nums : place){
                 std::cout <<nums << " ";
             }
             std::cout << std::endl;
+
         }
+        std::cout << std::endl;
+
+
+
 
     }
 
@@ -63,16 +71,19 @@ void backtraking(std::vector<std::vector<int>> mat, std::vector<std::vector<int>
             }
         }
 
-        if (path[x][y+1] != 1){
+        if (path[x][y+1] != 1 or y + 1 == n-1){
             //path[x][y+1] != 1 or y + 1 == n-1
 
             backtraking(mat, path, m, n, x, y + 1); //right
         }
+
+
         if (x != m-1 and y != n-1) {
 
             backtraking(mat, path, m, n, x, y - 1); //left
             backtraking(mat, path, m, n, x - 1, y); //up
         }
+
 
 
 
@@ -98,6 +109,8 @@ int main(){
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     std::vector<std::vector<int>> matrix(m);
+
+    // 2d vector with same dimensions as mat but filled with 0´s
     std::vector<std::vector<int>> path(m, std::vector<int>(n, 0));
 
     for (int i = 0; i<m; i++){
