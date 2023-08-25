@@ -14,68 +14,64 @@ Fecha 23 de Agosto del 2023
 
 */
 
+//poner counter y q a la primera nomas imprima
+
 // Includes
 #include <iostream>
 #include <limits>
 #include <sstream>
 #include <vector>
 
-void backtraking(std::vector<std::vector<int>> mat,
-                 std::vector<std::vector<int>> path, int m, int n, int x,
-                 int y) {
-
-  // 2d vector with same dimensions as mat but filled with 0´s
-
-  // std::cout << x << " " << y <<  std::endl;
-
-  // accept
-  if (x == m - 1 and y == n - 1) {
-    path[x][y] = 1;
-
-    for (std::vector<int> place : path) {
-
-      for (int nums : place) {
-        std::cout << nums << " ";
-      }
-      std::cout << std::endl;
-    }
-  }
-
-  // deny
-  if (x < 0 or y < 0 or x >= m or y >= n) {
-
-    return;
-  }
-
-  if (mat[x][y] == 0) {
-    path[x][y] = 0;
-    return;
-  }
-  path[x][y] = 1;
-
-  // loop
-  if (x + 1 <= m - 1) {
-    if (path[x + 1][y] != 1) {
-
-      backtraking(mat, path, m, n, x + 1, y); // down
-    }
-  }
-
-  if (path[x][y + 1] != 1) {
-    // path[x][y+1] != 1 or y + 1 == n-1
-
-    backtraking(mat, path, m, n, x, y + 1); // right
-  }
-  if (x != m - 1 and y != n - 1) {
-
-    backtraking(mat, path, m, n, x, y - 1); // left
-    backtraking(mat, path, m, n, x - 1, y); // up
-  }
-}
 
 bool canVisit(int x, int y, int m, int n, std::vector<std::vector<int>> &mat) {
-  return x >= 0 && y >= 0 && x < m && y < n && mat[x][y] == 1;
+    return x >= 0 && y >= 0 && x < m && y < n && mat[x][y] == 1;
 }
+
+void backtraking(std::vector<std::vector<int>> &mat,
+                  std::vector<std::vector<int>> &path, int m, int n, int x,
+                  int y, std::vector<std::vector<bool>> &visited) {
+    if (x == m - 1 && y == n - 1) {
+        path[x][y] = 1;
+
+        for (const std::vector<int> &row : path) {
+            for (int num : row) {
+                std::cout << num << " ";
+            }
+            std::cout << std::endl;
+        }
+        return;
+    }
+
+    if (!canVisit(x, y, m, n, mat) || visited[x][y]) {
+        return;
+    }
+
+
+
+    path[x][y] = 1;
+    visited[x][y] = true;
+
+    if (canVisit(x + 1, y, m, n, mat)) {
+        backtraking(mat, path, m, n, x + 1, y, visited);
+    }
+
+    if (canVisit(x, y + 1, m, n, mat)) {
+        backtraking(mat, path, m, n, x, y + 1, visited);
+    }
+
+    if (canVisit(x, y - 1, m, n, mat)) {
+        backtraking(mat, path, m, n, x, y - 1, visited);
+    }
+
+    if (canVisit(x - 1, y, m, n, mat)) {
+        backtraking(mat, path, m, n, x - 1, y, visited);
+    }
+
+    path[x][y] = 0;
+    visited[x][y] = false;
+}
+
+
 
 int calculateHeuristic(int x, int y, int m, int n) {
   int remainingRows = m - 1 - x;
@@ -176,7 +172,7 @@ int main() {
   path.assign(m, std::vector<int>(n, 0));
   
   std::cout << "Backtracking: \n";
-  backtraking(matrix, path, m, n, x, y);
+  backtraking(matrix, path, m, n, x, y, visited);
 
   return 0;
 }
