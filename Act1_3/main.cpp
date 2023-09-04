@@ -39,6 +39,7 @@ void backtraking(std::vector<std::vector<int>> mat,
       }
       std::cout << std::endl;
     }
+    path[x][y] = 0;
   }
 
   // deny
