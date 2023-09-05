@@ -9,6 +9,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -25,6 +26,7 @@ int main() {
   string nombreArchivo;
   char caracter;
   int n;
+  
 
   cin >> nombreArchivo;
   cin >> n;
@@ -36,6 +38,8 @@ int main() {
 
   ifstream archivo(nombreArchivo);
 
+
+
   if (!archivo) {
     cerr << "No se pudo abrir el archivo: " << nombreArchivo << endl;
     return 1;
@@ -46,27 +50,44 @@ int main() {
 
   while (archivo.get(caracter)) {
 
-    if (caracter == '\n') {
-      continue;
-    }
+    
 
     conjunto.push_back(caracter);
 
-    if (conjunto.size() == 4) {
+    if (conjunto.size() == n) {
       renglones.push_back(conjunto);
       conjunto.clear();
     }
   }
+  
 
   if (!conjunto.empty()) {
+    while (conjunto.size() < n){
+      conjunto.push_back('a');
+    }
     renglones.push_back(conjunto);
   }
 
+  int size = renglones.size() % n;
+
+  if (size != 0){
+    
+  }
+  
+
   for (const vector<char> &conjunto : renglones) {
+    string linea = "";
     for (char c : conjunto) {
-      cout << c;
+      
+      linea += c;
     }
+    /*
+    cout << linea << endl;
+    
+    cout << calcularHash(linea) << endl;
     cout << endl;
+    */
+    cout << std::uppercase << std::hex << std::setw(2) << std::setfill('0') << calcularHash(linea);
   }
 
   archivo.close();
