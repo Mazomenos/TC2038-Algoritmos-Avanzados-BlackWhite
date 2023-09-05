@@ -11,9 +11,12 @@ TC2038
 
 Fecha 3 de Septiembre del 2023
 
+The test cases provided in this study were created with the assistance of an AI language
+model (GPT-3) to ensure comprehensive coverage of scenarios for pattern matching algorithm
+validation. The model's responses were utilized to generate a variety of test cases, including
+complex scenarios and edge cases.
 
 */
-
 
 #include <fstream>
 #include <iomanip>
