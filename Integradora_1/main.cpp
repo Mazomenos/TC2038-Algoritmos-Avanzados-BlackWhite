@@ -36,7 +36,7 @@ vector<char> readFile(string fileName) {
 
     while (file.get(character)) {
 
-        //Agregale esto si quieres q con el new line
+        //Agregale esto si quieres q se pase el new line
         /*
         if (character == '\n'){
             continue;
