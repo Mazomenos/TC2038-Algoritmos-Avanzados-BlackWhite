@@ -20,9 +20,8 @@ Ejecucion:
 */
 
 #include <fstream>
-#include <iomanip>
 #include <iostream>
-#include <limits.h>
+#include <climits>
 #include <string>
 #include <vector>
 
@@ -152,6 +151,23 @@ void LCSub(vector<vector<char>> transmissions) {
   cout << resultStr << endl;
 }
 
+/*
+ * Parte 2: Palindromos mortales
+ *
+ */
+
+void findMPalindrome(vector<vector<char>> transmissions){
+
+
+    for (vector<char> transmission : transmissions){
+        for (char c : transmission){
+            cout << c << " ";
+        }
+        cout << endl;
+
+    }
+
+}
 
 
 int main() {
@@ -176,11 +192,14 @@ int main() {
   transmissions.push_back(ta2);
 
   // funciones de la actividad
-  cout << "Parte 1" << endl;
-  analizeTransmission(mcodes, transmissions);
+  //cout << "Parte 1" << endl;
+  //analizeTransmission(mcodes, transmissions);
 
-  cout << "Parte 3" << endl;
-  LCSub(transmissions);
+  cout << "Parte 2" << endl;
+  findMPalindrome(transmissions);
+
+  //cout << "Parte 3" << endl;
+  //LCSub(transmissions);
   
   return 0;
 }
