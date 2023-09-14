@@ -115,6 +115,44 @@ void analizeTransmission(vector<vector<char>> mcodes,
   }
 }
 
+void LCSub(vector<vector<char>> transmissions) {
+  int lenTrans01 = transmissions[0].size();
+  int lenTrans02 = transmissions[1].size();
+
+  vector<vector<int>> LCSuff(lenTrans01 + 1, vector<int>(lenTrans02 + 1));
+  int len = 0;
+  int row = 0, col = 0;
+  for (int i = 0; i <= lenTrans01; i++) {
+    for (int j = 0; j <= lenTrans02; j++) {
+      if (i == 0 || j == 0)
+        LCSuff[i][j] = 0;
+      else if (transmissions[0][i - 1] == transmissions[1][j - 1]) {
+        LCSuff[i][j] = LCSuff[i - 1][j - 1] + 1;
+        if (LCSuff[i][j] > len) {
+          len = LCSuff[i][j];
+          row = i;
+          col = j;
+        }
+      } else
+        LCSuff[i][j] = 0;
+    }
+  }
+  if (len == 0) {
+    cout << "No existe un substring comun mas largo" << endl;
+    return;
+  }
+  string resultStr(len + 1, ' ');
+  cout << "longitud: " << len << endl;
+
+  cout << row - resultStr.length() + 1 << " " << row - 1 << " ";
+  while (LCSuff[row][col] != 0) {
+    resultStr[--len] = transmissions[0][row - 1];
+    row--;
+    col--;
+  }
+  cout << resultStr << endl;
+}
+
 
 
 int main() {
@@ -143,7 +181,7 @@ int main() {
   analizeTransmission(mcodes, transmissions);
 
   cout << "Parte 3" << endl;
-  
+  LCSub(transmissions);
   
   return 0;
 }
