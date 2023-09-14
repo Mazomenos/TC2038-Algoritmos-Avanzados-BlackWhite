@@ -142,7 +142,6 @@ void LCSub(vector<vector<char>> transmissions) {
     return;
   }
   string resultStr(len + 1, ' ');
-  cout << "longitud: " << len << endl;
 
   cout << row - resultStr.length() + 1 << " " << row - 1 << " ";
   while (LCSuff[row][col] != 0) {
