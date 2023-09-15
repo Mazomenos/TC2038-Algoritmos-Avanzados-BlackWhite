@@ -54,7 +54,8 @@ vector<char> readFile(string fileName) {
   }
   return arr;
 }
-
+// codigo basado y sacado de geeksforgeeks 
+// https://www.geeksforgeeks.org/rabin-karp-algorithm-for-pattern-searching/
 void analizeTransmission(vector<vector<char>> mcodes,
                          vector<vector<char>> transmissions) {
   vector<vector<int>> indices(mcodes.size() * transmissions.size());
