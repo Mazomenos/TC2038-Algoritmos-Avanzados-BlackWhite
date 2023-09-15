@@ -44,11 +44,10 @@ vector<char> readFile(string fileName) {
   while (file.get(character)) {
 
     // Agregale esto si quieres q se pase el new line
-    /*
+    
     if (character == '\n'){
         continue;
     }
-    */
 
     arr.push_back(character);
   }
@@ -334,9 +333,8 @@ int main() {
   vector<char> ta2 = readFile(t2);
   transmissions.push_back(ta2);
 
-  //funciones de la actividad
-  //cout << "Parte 1" << endl;
-  //analizeTransmission(mcodes, transmissions);
+  cout << "Parte 1" << endl;
+  analizeTransmission(mcodes, transmissions);
 
   cout << "Parte 2" << endl;
     palindromoMaligno(transmissions[0]);
