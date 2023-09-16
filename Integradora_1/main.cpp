@@ -152,7 +152,7 @@ void LCSub(vector<vector<char>> transmissions) {
   cout << resultStr << endl;
 }
 
-//COPIA DESDE AQUI
+
 //--------------------------------------------------------------------------------------------
 
 /*
@@ -315,7 +315,7 @@ void palindromoMaligno(vector<char> text)
     cout << endl;
 }
 
-//COPIA HASTA AQUI
+
 //--------------------------------------------------------------------------------------------
 
 
