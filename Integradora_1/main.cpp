@@ -54,6 +54,8 @@ vector<char> readFile(string fileName) {
   return arr;
 }
 
+// codigo basado y sacado de geeksforgeeks 
+// https://www.geeksforgeeks.org/rabin-karp-algorithm-for-pattern-searching/
 void analizeTransmission(vector<vector<char>> mcodes,
                          vector<vector<char>> transmissions) {
   vector<vector<int>> indices(mcodes.size() * transmissions.size());
@@ -158,6 +160,11 @@ void LCSub(vector<vector<char>> transmissions) {
  * Esta funcion recibe un vector de char y nos imprime el palindromo mas grande que se tiene
  * dentro del vector.
  * Tiene una complejidad de tiempo de O(n)
+ * 
+ * Codigo basado en articulos siguientes articulos e implementacion:
+ * https://www.geeksforgeeks.org/manachers-algorithm-linear-time-longest-palindromic-substring-part-1/
+ * https://www.geeksforgeeks.org/manachers-algorithm-linear-time-longest-palindromic-substring-part-2/
+ * https://www.geeksforgeeks.org/manachers-algorithm-linear-time-longest-palindromic-substring-part-3-2/
  */
 
 void palindromoMaligno(vector<char> text)
