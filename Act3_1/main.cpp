@@ -1,4 +1,21 @@
-/** 
+/*
+Equipo:
+
+Integrantes:
+
+- Gustavo Betancourt Mazomenos A01252832
+
+- Alejandro Jauregui Zarate A01252368
+
+TC2038
+
+Fecha 22 de Septiembre del 2023
+
+Compilacion para ejecucion:
+ g++ -std=c++17 -O3 -o main *.cpp
+Ejecucion:
+ ./main < test01.txt
+
 * Ejemplo que implementa un Trie (Arbol de prefijos)
 *
 * Compilacion para debug:  
@@ -19,7 +36,8 @@
 
 using namespace std;
 
-//This code has a time complexity of !!!
+//This code has a time complexity of O(N)
+//TIme complexities for each individual function are in the trie.cpp file
 int main() {
   trie T;
   int N = 0;

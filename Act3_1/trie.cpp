@@ -13,7 +13,8 @@ trie::~trie() {
 }
 
 //Aux function for Deconstructor
-//Has a time complexity of !!!
+//Has a time complexity of O(N) since it needs to go to and
+//delete every node
 void trie::destroy(nodeTrie* node) {
   int aV = 'a';
   if (node) {
@@ -29,7 +30,8 @@ void trie::destroy(nodeTrie* node) {
 }
 
 //Inserts word to Trie
-//Has a time complexity of !!!
+//Has a time complexity of O(word_length) since it needs to
+//go down or create nodes until it can store the whole word
 void trie::insert(std::string word) {
   nodeTrie *current = root;
   for (int i = 0; i < (int)word.length(); i++) {
@@ -43,7 +45,8 @@ void trie::insert(std::string word) {
 }
 
 //Searches a given word and returns a bool if its found or not
-//Has a time complexity of !!!
+//Has a time complexity of O(word_length) because it needs to
+//go down all the way to the end of the word, passing through all its nodes
 bool trie::search(std::string word) {
   nodeTrie *current = root;
   if (current == nullptr)
@@ -57,7 +60,12 @@ bool trie::search(std::string word) {
   return current->getIsLeaf();
 }
 
-//Alejandro do ur thing
+/*
+ * Receives the function and a prefix to then return the
+ * words in the trie in lexicographic order.
+ * Has a time complexity of O(N) since it needs to go
+ * through all the nodes to print the words
+ */
 void trie::dfs(nodeTrie *node, std::string prefix) {
   nodeTrie *current = (node == nullptr) ? root : node;
   if (current->getIsLeaf()) {
@@ -76,7 +84,10 @@ void trie::dfs(nodeTrie *node, std::string prefix) {
  * Receives a prefix and first searches if it's in the trie
  * In case its there, it proceeds to run a dfs search with the last
  * letter of the prefix as its root
- * Has a time complexity of !!!
+ * Has a time complexity of O(N_after_Prefix + Prefix_length) since it
+ * first has to traverse the prefix and set it as the root, and after this
+ * it runs the dfs with the new root, so instead of being the total number of nodes,
+ * it's just the number of nodes after the new prefix root
  */
 void trie::autoComplete(std::string prefix) {
     //Search prefix
