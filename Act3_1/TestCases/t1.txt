@@ -1,0 +1,16 @@
+7
+apple
+banana
+cherry
+date
+fig
+grape
+kiwi
+6
+apple
+cherry
+grape
+lemon
+orange
+peach
+gr
