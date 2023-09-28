@@ -67,3 +67,38 @@ void Graph::print() {
     std::cout << std::endl;
   }
 }
+
+void Graph::Dijkstra(int source) {
+  std::cout << "Dijkstra, shortest paths from source vertex " << std::endl;
+
+  std::vector<int> distance(numNodes, std::numeric_limits<int>::max());
+  std::vector<int> parent(numNodes, -1);
+  std::set<int> visited;
+
+  distance[source] = 0;
+
+  std::set<std::pair<int, int>> unvisitedNodes;
+  unvisitedNodes.insert({0, source});
+
+  while (!unvisitedNodes.empty()) {
+    int currentNode = unvisitedNodes.begin()->second;
+    unvisitedNodes.erase(unvisitedNodes.begin());
+    visited.insert(currentNode);
+
+    for (const auto &neighbor : adjList[currentNode]) {
+      int nextNode = neighbor.first;
+      int edgeWeight = neighbor.second;
+
+      if (visited.find(nextNode) == visited.end() &&
+          (distance[currentNode] + edgeWeight) < distance[nextNode]) {
+        distance[nextNode] = distance[currentNode] + edgeWeight;
+        parent[nextNode] = currentNode;
+        unvisitedNodes.insert({distance[nextNode], nextNode});
+      }
+    }
+  }
+
+  for (int i = 0; i < numNodes; ++i) {
+    std::cout << i + 1 << ": " << distance[i] << std::endl;
+  }
+}
