@@ -23,6 +23,7 @@ public:
   ~Graph();
   void readGraph(std::istream &input);
   void print();
+  void Dijkstra(int source);
 };
 
 #endif // _GRAPH_H_
