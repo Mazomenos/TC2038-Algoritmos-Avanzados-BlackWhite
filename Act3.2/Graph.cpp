@@ -29,10 +29,6 @@ void Graph::readGraph(std::istream &input) {
   int i = 0;
   while (std::getline(input, line)) {
     if (i == 0) {
-      i++;
-      continue;
-    }
-    if (i == 1) {
       std::vector<int> res;
       split(line, res);
       numNodes = res[0];
