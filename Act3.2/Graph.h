@@ -2,6 +2,7 @@
 #define _GRAPH_H_
 
 #include <iostream>
+#include <limits>
 #include <list>
 #include <queue>
 #include <set>
