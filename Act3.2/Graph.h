@@ -25,6 +25,8 @@ public:
   void readGraph(std::istream &input);
   void print();
   void Dijkstra(int source);
+  std::vector<std::vector<int>> MatrixGenerator();
+  void floydWarshall(std::vector<std::vector<int>> D);
 };
 
 #endif // _GRAPH_H_

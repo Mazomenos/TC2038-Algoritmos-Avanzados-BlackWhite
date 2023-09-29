@@ -110,3 +110,64 @@ void Graph::Dijkstra(int source) {
     std::cout << i + 1 << ": " << distance[i] << std::endl;
   }
 }
+
+std::vector<std::vector<int>> Graph::MatrixGenerator() {
+    int value;
+    int j;
+
+
+    //N de vertices
+    int n = adjList.size();
+    std::vector<std::vector<int>> D(n, std::vector<int>(n, 1000));
+    //vertice
+    //int i = 0;
+    //paso de lista de adjacencia
+    //int paso = 1;
+
+    for (int i = 0; i<n; i++){
+        //std::cout << "DONE" << std::endl;
+        //std::cout << n << std::endl;
+        for (int paso = 0; paso < adjList[i].size(); paso++){
+            std::list<std::pair<int, int>>::iterator it = std::next(adjList[i].begin(), paso);
+
+            //Peso
+            value = it->second;
+            //Vertice
+            j = it->first;
+            D[i][j] = value;
+            //std::cout << "Valor de D[" <<i+1 << "][" << j+1 << "] " << D[i][j] << std::endl;
+        }
+        D[i][i] = 0;
+        //std::cout << "Valor de D[" <<i+1 << "][" << i+1 << "] " << D[i][i] << std::endl;
+    }
+
+    return D;
+}
+
+void Graph::floydWarshall(std::vector<std::vector<int>> D){
+    int n = D.size();
+    std::cout << "Floyd-Warshall, all pairs shortest path" << std::endl;
+
+    for (int k = 0; k<n; k++){
+        for (int i = 0; i<n; i++){
+            for(int j = 0; j<n; j++){
+                if (D[i][j] > D[i][k] + D[k][j]){
+                    D[i][j] = D[i][k] + D[k][j];
+                }
+            }
+        }
+
+    }
+
+    for (int i = 0; i<n; i++){
+        for (int j = 0; j<n; j++){
+            if (D[i][j] == 1000){
+                std::cout << "INF ";
+            } else
+                std::cout << D[i][j] << "   ";
+        }
+        std::cout << std::endl;
+    }
+
+
+}

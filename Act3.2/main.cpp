@@ -21,7 +21,8 @@ int main() {
 
   Graph g1;
   g1.readGraph(inputInfo);
-  g1.print();
-
+  //g1.print();
+  g1.Dijkstra(0);
+  g1.floydWarshall(g1.MatrixGenerator());
   return 0;
 }
