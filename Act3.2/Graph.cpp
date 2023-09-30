@@ -68,6 +68,11 @@ void Graph::print() {
   }
 }
 
+// la complejidad algoritmica del algoritmo de Dijkstra se puede entender en diversas partes donde podemos verlo como el bucle principal hace el recorrido
+// por la cantidad de nodos donde luego hace el recorrido de O(E) donde E es el numero de aristas para luego ver que las operaciones de insercion  
+// y modificaciones del conjunto 'unvisited' se puede ver como O(log V) por lo que al final podemos entender la complejidad algoritmica como 
+// O((E+V)*log(V))
+
 void Graph::Dijkstra(int source) {
   const int INF = std::numeric_limits<int>::max();
 
