@@ -1,6 +1,7 @@
 
 #include "Graph.h"
 
+
 Graph::Graph() {
   adjList.clear();
   numEdges = 0;
@@ -74,7 +75,7 @@ void Graph::print() {
 // O((E+V)*log(V))
 
 void Graph::Dijkstra(int source) {
-  const int INF = std::numeric_limits<int>::max();
+    const int INF = 9999;
 
   std::cout << "Dijkstra, shortest paths from source vertex " << std::endl;
 
@@ -116,14 +117,20 @@ void Graph::Dijkstra(int source) {
   }
 }
 
+/*
+ *  Esta funcion auxiliar nos devuelve una matriz de adjacencia que se genera
+ *  a partir de la lista de adjacencia, con una complejidad de O(n^2) por que en el peor de los casos tendria
+ *  que llenar todos los espacios manualmente con vertices.
+ */
 std::vector<std::vector<int>> Graph::MatrixGenerator() {
+    const int INF = 9999;
     int value;
     int j;
 
 
     //N de vertices
     int n = adjList.size();
-    std::vector<std::vector<int>> D(n, std::vector<int>(n, 1000));
+    std::vector<std::vector<int>> D(n, std::vector<int>(n, INF));
     //vertice
     //int i = 0;
     //paso de lista de adjacencia
@@ -149,7 +156,16 @@ std::vector<std::vector<int>> Graph::MatrixGenerator() {
     return D;
 }
 
+/*
+ * Este algoritmo tiene una complejidad de O(n^3) ya que tiene 3 loops for´s (n cambios a matriz
+ *  de n*n que debe recorrer todas las posiciones cada iteracion) para poder tener la matriz
+ * con los paths mas cortos y tiene una complejdad espacial de O(n^2) ya que la matriz es n*n.
+ *
+ * Tambien es importante mencionar que la matriz es un parametro que en este caso lo generamos
+ * con una funcion auxiliar con la lista de adjacencia
+ */
 void Graph::floydWarshall(std::vector<std::vector<int>> D){
+    const int INF = 9999;
     int n = D.size();
     std::cout << "Floyd-Warshall, all pairs shortest path" << std::endl;
 
@@ -166,7 +182,7 @@ void Graph::floydWarshall(std::vector<std::vector<int>> D){
 
     for (int i = 0; i<n; i++){
         for (int j = 0; j<n; j++){
-            if (D[i][j] == 1000){
+            if (D[i][j] == INF){
                 std::cout << "INF ";
             } else
                 std::cout << D[i][j] << "   ";

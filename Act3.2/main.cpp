@@ -1,4 +1,18 @@
-/**
+/*
+Equipo:
+
+Integrantes:
+
+- Gustavo Betancourt Mazomenos A01252832
+
+- Alejandro Jauregui Zarate A01252368
+
+TC2038
+
+Fecha 29 de Septiembre del 2023
+
+
+
  * Compilacion para debug:
  *    g++ -std=c++17 -g -o main *.cpp
  * Ejecucion con valgrind:
