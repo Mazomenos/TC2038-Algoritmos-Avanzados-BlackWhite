@@ -1,6 +1,17 @@
-//
-// Created by gustb on 14/11/2023.
-//
+/*
+Equipo:
+
+Integrantes:
+
+- Gustavo Betancourt Mazomenos A01252832
+
+- Alejandro Jauregui Zarate A01252368
+
+TC2038
+
+Fecha 16 de Noviembre del 2023
+
+**/
 
 #include <iostream>
 #include <vector>
@@ -72,23 +83,13 @@ bool comparePoints(const Point &p1, const Point &p2) {
 }
 
 
-float ConvexHull(std::vector<Point> points, int n, float c){
-
-    /*
-    for (int i = 0; i < n; i++){
-        std::cout << "Point " << i + 1 << ": "  << points[i].getX()  << " " << points[i].getY() << std::endl;
-    }
-    */
+double ConvexHull(std::vector<Point> points, int n, float c){
 
     std::vector<Point> hullUpper;
     std::vector<Point> hullLower;
     std::vector<Point> hull;
 
     std::sort(points.begin(), points.end(), comparePoints);
-
-
-
-
 
     hullUpper.push_back(points[0]);
     hullUpper.push_back(points[1]);
@@ -97,20 +98,10 @@ float ConvexHull(std::vector<Point> points, int n, float c){
 
         hullUpper.push_back(points[i]);
 
-        /*
-        for (int i = 0; i < hullUpper.size(); i++){
-            std::cout << "Point " << i + 1 << ": "  << hullUpper[i].getX()  << " " << hullUpper[i].getY() << std::endl;
-        }
-         */
-
         while (hullUpper.size() > 2 and (orientacion(hullUpper[hullUpper.size() - 3], hullUpper[hullUpper.size() -2], hullUpper[hullUpper.size() - 1]) > 0)){
+
             hullUpper.erase(hullUpper.begin() + (hullUpper.size() - 2));
-            /*
-            std::cout << "Erased: " << std::endl;
-            for (int i = 0; i < hullUpper.size(); i++){
-                std::cout << "Point " << i + 1 << ": "  << hullUpper[i].getX()  << " " << hullUpper[i].getY() << std::endl;
-            }
-            */
+
         }
     }
 
@@ -152,13 +143,13 @@ float ConvexHull(std::vector<Point> points, int n, float c){
 
     int i = 0;
     int j = 1;
-    float suma = 0;
+    double suma = 0;
 
     //THIS LOOP GOES FROM PAIR TO PAIR OF INDEXES AND
     //SUMS THE WEIGHT VALUE BETWEEN THE 2 TO CA
     while (i < hull.size() and j < hull.size()){
 
-        float medida = distance(hull[i],hull[j]);
+        double medida = distance(hull[i],hull[j]);
         suma += (medida*c);
 
 
@@ -167,12 +158,10 @@ float ConvexHull(std::vector<Point> points, int n, float c){
 
     }
 
-    float medida = distance(hull[0],hull[j-1]);
+    double medida = distance(hull[0],hull[j-1]);
     suma += (medida*c);
 
-    printf("%.2f\n", suma);
-
-    return 1.2;
+    return suma;
 }
 
 int main(){
@@ -194,7 +183,9 @@ int main(){
     }
 
     //INSERTAR FUNCION PRO AQUI
-    ConvexHull(pointsList, n, c);
+    double result = ConvexHull(pointsList, n, c);
+
+    printf("%.2f\n", result);
 
     return 0;
 }
