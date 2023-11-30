@@ -12,6 +12,7 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <random>
 
 class Graphs {
 private:
@@ -27,13 +28,15 @@ private:
 
   std::vector<int> generateRandomSolution();
 
+  void randomSwap(std::vector<int> &labels);
+
 
 public:
   Graphs();
   ~Graphs();
   void readGraph(std::istream &input);
   void print();
-  void solveBandsize(int maxIterations);
+  void solveBandsize();
 };
 
 #endif // _GRAPHS_H_

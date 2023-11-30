@@ -77,80 +77,102 @@ void Graphs::print() {
 
 /////////////////////////////////////////////////////
 
-// La complejidad de la funcion que es basicamente lo que corre todas las demas funciones declaradas abajo, tiene una complejidad de O(n^2 * Iteraciones) donde n es el numero de nodos del grafo, esto porque por default tiene que ver todos los nodos del grafo y sus combinaciones al igual que esto esta dentro de un ciclo donde en el peor de los casos, tendria que correr sobre el numero de iteraciones. Por lo que por todo el codigo se podria ver de la siguiente manera: O(n + n^2 * n^2 * iteraciones) o O(n^4 * iteraciones)
 
-void Graphs::solveBandsize(int maxIterations) {
-  srand(static_cast<unsigned int>(time(0)));
 
-  // Genera una solucion o etiquetado aleatorio para comenzar a
-  // buscar en el vecindario
+void Graphs::solveBandsize() {
 
-  std::vector<int> currentSolution = generateRandomSolution();
-  std::vector<int> newSolution = currentSolution;
-  int bestBandsize = calculateBandsize(currentSolution);
-  bestSolution = currentSolution;
+    std::random_device rd;
+    std::mt19937 g(rd());
 
-  bool stopFlag = false;
+    //Solucion Inicial
+    std::vector<int> listaActual = generateRandomSolution();
+    std::vector<int> listaSolucion = listaActual;
+    int solucion = calculateBandsize(listaSolucion);
 
-  // El bucle terminara hasta que se llegue al numero maximo de iteraciones
-  // o que no se encuentre una mejor opcion en el vecindario local
-  
-  for (int iter = 0; iter < maxIterations && stopFlag == false; ++iter) {
-    newSolution = bestSolution;
-    currentSolution = bestSolution;
+    std::vector<int> neoListaSolucion;
+    int neoSolucion;
 
-    stopFlag = true;
+    int delta;
 
-    // Busca en el vecindario y calcula su bandsize
+    //Temperatura y sus caracteristicas
+    float T = 100;
+    float Tf = 0.01;
+    float Cooling = 0.98;
+    int cl = numNodes * 0.8;
 
-    for (int u = 0; u < numNodes; u++) {
-      for (int v = u + 1; v < numNodes; v++) {
+    std::uniform_real_distribution<float> uValue(0.0f, 1.0f);
 
-        std::swap(newSolution[u], newSolution[v]);
-
-        int newBandsize = calculateBandsize(newSolution);
-
-        if (newBandsize < bestBandsize) {
-          bestBandsize = newBandsize;
-          bestSolution = newSolution;
-          stopFlag = false;
+    while (T > Tf) {
+        std::cout << "temp: " << T << " Mejor Solcion:  " << solucion << std::endl;
+        int c = 0;
+        while (c < cl){
+            c++;
+            neoListaSolucion = listaActual;
+            randomSwap(neoListaSolucion);
+            neoSolucion = calculateBandsize(neoListaSolucion);
+            delta = neoSolucion - calculateBandsize(listaActual);
+            int u = uValue(g);
+            if (delta <= 0 or exp(-delta/T) > u) {
+                listaActual = neoListaSolucion;
+                if (neoSolucion < solucion) {
+                    listaSolucion = listaActual;
+                    solucion = neoSolucion;
+                }
+            }
         }
-        newSolution = currentSolution;
-      }
+        T = T * Cooling;
     }
-  }
 
-  // Imprimir el resultado final
-  std::cout << "Costo de la mejor solución encontrada: " << bestBandsize
-            << std::endl;
-  std::cout << "Etiquetado del grafo producido: ";
-  for (int label : bestSolution) {
-    std::cout << label + 1 << " "; // Convertir a etiquetas de uno-basado
-  }
-  std::cout << std::endl;
+    std::cout << "bandsize: " << solucion << std::endl;
+    std::cout << "Etiquetado del grafo producido: ";
+    for (int label : listaSolucion) {
+        std::cout << label + 1 << " "; // Convertir a etiquetas de uno-basado
+    }
+    std::cout << std::endl;
+
+
 }
 
 ///////////////////////////////////
 
-// La funcion por default solo tiene una complejidad de O(n) donde
-// n es el numero de nodos pues genera un solucion o etiquetados
-// de los nodos
-
 std::vector<int> Graphs::generateRandomSolution() {
   std::vector<int> solution(numNodes);
+
+  std::random_device rd;
+  std::mt19937 g(rd());
+
   for (int i = 0; i < numNodes; i++) {
     solution[i] = i;
   }
-  std::random_shuffle(solution.begin(), solution.end());
+  std::shuffle(solution.begin(), solution.end(), g);
   return solution;
+}
+
+///////////////////////////////////////
+
+void Graphs::randomSwap(std::vector<int> &labels) {
+
+    std::random_device rd;
+    std::mt19937 g(rd());
+
+    std::uniform_int_distribution<int> randomNode(0, numNodes-1);
+
+    int u = randomNode(g);
+    int v;
+    do {
+        v = randomNode(g);
+    }
+    while (u == v);
+
+    std::swap(labels[u],labels[v]);
+
 }
 
 //////////////////////////////////////
 
-// La funcion hace un recorrido de las aristas de los nodos
-// por lo que en el peor de los casos podemos inferir que es una
-// complejidad de O(n^2) donde n representa la cantidad de nodos que hay
 
+
+//No cambiar
 int Graphs::calculateBandsize(const std::vector<int> &labels) {
   int bandsize = 0;
   int restAbs = 0;
